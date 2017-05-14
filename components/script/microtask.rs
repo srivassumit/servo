@@ -74,7 +74,7 @@ impl MicrotaskQueue {
                         }
                     }
                     Microtask::NotifyMutationObservers() => {
-                        MutationObserver::notifyMutationObservers();
+                        let _ = MutationObserver::notifyMutationObservers();
                     }
                 }
             }

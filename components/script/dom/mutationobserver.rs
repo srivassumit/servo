@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+#![allow(unused_variables)]
 use core::ops::Deref;
 use dom::bindings::callback::ExceptionHandling;
 use dom::bindings::cell::DOMRefCell;
@@ -94,12 +94,12 @@ impl MutationObserver {
         let notifyList = ScriptThread::get_mutation_observer();
         // Step 3, Step 4 not needed as Servo doesn't implement anything related to slots yet.
         // Step 5: Ignore the specific text about execute a compound microtask.
-        for (i, mo) in notifyList.iter().enumerate() {
+        for (_, mo) in notifyList.iter().enumerate() {
             let queue: Vec<Root<MutationRecord>> = mo.record_queue.borrow().clone();
             *mo.record_queue.borrow_mut() = Vec::new();
             // TODO: Step 5.3 Remove all transient registered observers whose observer is mo.
             if !queue.is_empty() {
-                mo.callback.Call_(&**mo, queue, &**mo, ExceptionHandling::Report);
+                let _ = mo.callback.Call_(&**mo, queue, &**mo, ExceptionHandling::Report);
             }
         }
         // Step 6 not needed as Servo doesn't implement anything related to slots yet.
